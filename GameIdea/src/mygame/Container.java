@@ -17,11 +17,14 @@ public class Container extends JFrame {
 
     public static void main(String[] args) {
         Container window = new Container();
+        GamePanel gamePanel = new GamePanel();
         window.add(new GamePanel());
+
         window.pack();
+
         window.setLocationRelativeTo(null);
         window.setVisible(true);
-        GamePanel gamePanel = new GamePanel();
+
 
         gamePanel.startGameThread();
     }

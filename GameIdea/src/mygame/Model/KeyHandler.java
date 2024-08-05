@@ -16,16 +16,16 @@ public class KeyHandler implements KeyListener {
     public void keyPressed(KeyEvent e) {
         int code = e.getKeyCode();
         if (code == KeyEvent.VK_W) {
-            upPressed = true;
+            this.upPressed = true;
         }
         if (code == KeyEvent.VK_S) {
-            downPressed = true;
+            this.downPressed = true;
         }
         if (code == KeyEvent.VK_A) {
-            leftPressed = true;
+            this.leftPressed = true;
         }
         if (code == KeyEvent.VK_D) {
-            rightPressed = true;
+            this.rightPressed = true;
         }
         System.out.println(rightPressed);
     }
