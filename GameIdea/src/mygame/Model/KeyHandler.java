@@ -1,6 +1,5 @@
 package mygame.Model;
 
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -15,51 +14,54 @@ public class KeyHandler implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         int code = e.getKeyCode();
-        if (code == KeyEvent.VK_W) {
-            this.upPressed = true;
+        switch(code){
+            case KeyEvent.VK_W:
+                this.upPressed = true;
+                break;
+            case KeyEvent.VK_S:
+                this.downPressed = true;
+                break;
+            case KeyEvent.VK_A:
+                this.leftPressed = true;
+                break;
+            case KeyEvent.VK_D:
+                this.rightPressed = true;
+                break;
         }
-        if (code == KeyEvent.VK_S) {
-            this.downPressed = true;
-        }
-        if (code == KeyEvent.VK_A) {
-            this.leftPressed = true;
-        }
-        if (code == KeyEvent.VK_D) {
-            this.rightPressed = true;
-        }
-        System.out.println(rightPressed);
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
         int code = e.getKeyCode();
-        if (code == KeyEvent.VK_W) {
-            upPressed = false;
-        }
-        if (code == KeyEvent.VK_S) {
-            downPressed = false;
-        }
-        if (code == KeyEvent.VK_A) {
-            leftPressed = false;
-        }
-        if (code == KeyEvent.VK_D) {
-            rightPressed = false;
+        switch(code){
+            case KeyEvent.VK_W:
+                this.upPressed = false;
+                break;
+            case KeyEvent.VK_S:
+                this.downPressed = false;
+                break;
+            case KeyEvent.VK_A:
+                this.leftPressed = false;
+                break;
+            case KeyEvent.VK_D:
+                this.rightPressed = false;
+                break;
         }
     }
 
     public boolean isUpPressed() {
-        return upPressed;
+        return this.upPressed;
     }
 
     public boolean isDownPressed() {
-        return downPressed;
+        return this.downPressed;
     }
 
     public boolean isLeftPressed() {
-        return leftPressed;
+        return this.leftPressed;
     }
 
     public boolean isRightPressed() {
-        return rightPressed;
+        return this.rightPressed;
     }
 }

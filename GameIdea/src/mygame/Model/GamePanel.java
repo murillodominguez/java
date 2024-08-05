@@ -9,7 +9,7 @@ public class GamePanel extends JPanel implements Runnable {
     final int scale = 3;
 
     final int tileSize = originalTileSize * scale;
-    final int maxScreenCol = 16;
+    public final int maxScreenCol = 16;
     final int maxScreenRow = 12;
     final int screenWidth = tileSize * maxScreenCol;
     final int screenHeight = tileSize * maxScreenRow;
@@ -19,11 +19,9 @@ public class GamePanel extends JPanel implements Runnable {
     KeyHandler keyH = new KeyHandler();
     Thread gameThread;
 
+    Player player = new Player();
+    Enemy enemy = new Enemy();
 
-
-    private int playerX = 100;
-    private int playerY = 100;
-    final int playerSpeed = 4;
     
     public GamePanel(){
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -70,20 +68,8 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void update(){
-        System.out.println(keyH.rightPressed);
-        if (keyH.isUpPressed()){
-            playerY -= playerSpeed;
-            System.out.println("estou aqui");
-        }
-        else if (keyH.isDownPressed()){
-            playerY += playerSpeed;
-        }
-        else if (keyH.isLeftPressed()){
-            playerX -= playerSpeed;
-        }
-        else if (keyH.isRightPressed()){
-            playerX += playerSpeed;
-        }
+        player.update(keyH);
+        enemy.update(null);
     }
 
     @Override
@@ -93,7 +79,8 @@ public class GamePanel extends JPanel implements Runnable {
 
         Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(Color.white);
-        g2d.fillRect(playerX, playerY, tileSize, tileSize);
+        player.load(g2d);
+        enemy.load(g2d);
 //        g2d.drawImage(background, 0, 0, null);
 //        g2d.drawImage(player.getSprite(), player.getX(), player.getY(), this);
         g2d.dispose();
