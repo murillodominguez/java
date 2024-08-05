@@ -16,10 +16,11 @@ public class Container extends JFrame {
     }
 
     public static void main(String[] args) {
+    	
         Container window = new Container();
         GamePanel gamePanel = new GamePanel();
         window.add(gamePanel);
-
+        
         window.pack();
 
         window.setLocationRelativeTo(null);
