@@ -21,7 +21,7 @@ public class GamePanel extends JPanel implements Runnable {
     private KeyHandler keyH = new KeyHandler();
     private Thread gameThread;
 
-    private Player player = new Player();
+    private Player player = new Player(this, keyH);
     private List<Enemy> enemies;
     
     
@@ -42,29 +42,29 @@ public class GamePanel extends JPanel implements Runnable {
 
     @Override
     public void run(){
+        long lastTime = System.nanoTime();
         double drawInterval = 1000000000/60;
-        double nextDrawTime = System.nanoTime() + drawInterval;
-
+        long timePassed;
+        long timer = 0;
+        double delta = 0;
+        int drawCount = 0;
         while(gameThread.isAlive()){
+            timePassed = System.nanoTime();
+            delta += (timePassed - lastTime) / drawInterval;
+            timer += timePassed - lastTime;
+            lastTime = timePassed;
 
-            update();
-            
-            repaint();
-            
-            try {
-                double remainingTime = nextDrawTime - System.nanoTime();
-                remainingTime = remainingTime/1000000;
-                if(remainingTime < 0) {
-                    remainingTime = 0;
-                }
-                Thread.sleep((long) remainingTime);
-
-                nextDrawTime += drawInterval;
+            if(delta >= 1){
+                update();
+                repaint();
+                delta--;
+                drawCount++;
             }
-            catch(InterruptedException e){
-                e.printStackTrace();
+            if(timer >= 1000000000){
+                System.out.println("FPS: " + drawCount);
+                drawCount = 0;
+                timer = 0;
             }
-           
         }
     }
     
@@ -74,7 +74,7 @@ public class GamePanel extends JPanel implements Runnable {
     	for(int i = 0; i < enemyCoordinates.length; i++) {
     		int x = (int)(Math.random() *  (668-200+1))+200;
     		int y = (int)(Math.random() * 650 + 30);
-    		enemies.add(new Enemy(x,y));
+    		enemies.add(new Enemy());
     	}
     }
     
@@ -88,7 +88,7 @@ public class GamePanel extends JPanel implements Runnable {
     
     @Override
     public void paintComponent(Graphics g){
-    	Toolkit.getDefaultToolkit().sync();
+//    	Toolkit.getDefaultToolkit().sync();
         super.paintComponent(g);
 
         Graphics2D g2d = (Graphics2D) g;
@@ -96,7 +96,6 @@ public class GamePanel extends JPanel implements Runnable {
         player.load(g2d);
         for(int i = 0; i < enemies.size(); i++) {
         	Enemy enemy = enemies.get(i);
-    		System.out.println(enemies.get(i));
         		if(enemy.isOnScreen()) {
         			enemy.load(g2d);
         		}
