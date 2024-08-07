@@ -13,22 +13,27 @@ public class Player extends Entity {
     public Player(GamePanel gp, KeyHandler keyH){
         this.gp = gp;
         this.keyH = keyH;
-        this.width = gp.tileSize;
-        this.height = gp.tileSize;
+        this.width = gp.tileSize * 2;
+        this.height = gp.tileSize * 2;
         setDefaultValues();
+        getPlayerSprite();
     }
 
     public void setDefaultValues(){
         this.x = 100;
         this.y = 100;
         this.speed = 4;
-        this.direction = "right";
+        this.direction = "rightIdle";
     }
 
     public void getPlayerSprite(){
         try{
-            this.spriteLeft1 = ImageIO.read(getClass().getResourceAsStream("/player/sprite_l1.png"));
-            this.spriteRight1 = ImageIO.read(getClass().getResourceAsStream("/player/sprite_r1.png"));
+            this.spriteIdleLeft = ImageIO.read(getClass().getResourceAsStream("/player/sprite_idle_l1.png"));
+            this.spriteIdleRight = ImageIO.read(getClass().getResourceAsStream("/player/sprite_idle_r1.png"));
+            this.spriteWalkLeft1 = ImageIO.read(getClass().getResourceAsStream("/player/sprite_walk_l1.png"));
+            this.spriteWalkLeft2 = ImageIO.read(getClass().getResourceAsStream("/player/sprite_walk_l2.png"));
+            this.spriteWalkRight1 = ImageIO.read(getClass().getResourceAsStream("/player/sprite_walk_r1.png"));
+            this.spriteWalkRight2 = ImageIO.read(getClass().getResourceAsStream("/player/sprite_walk_r2.png"));
         }
         catch(IOException e){
             e.printStackTrace();
@@ -36,29 +41,48 @@ public class Player extends Entity {
     }
 
     public void draw(Graphics2D g2d){
-        BufferedImage image = switch (this.direction) {
-            case "left" -> this.spriteLeft1;
-            case "right" -> this.spriteRight1;
-            default -> null;
+        BufferedImage image = null;
+        switch (this.direction) {
+            case "left":
+                if(spriteNum == 1){
+                    image = spriteWalkLeft1;
+                }
+                if(spriteNum == 2){
+                    image = spriteWalkLeft2;
+                }
+                break;
+            case "right":
+                if(spriteNum == 1){
+                    image = spriteWalkRight1;
+                }
+                if(spriteNum == 1){
+                    image = spriteWalkRight2;
+                }
+                break;
+            default:
+                image = spriteIdleRight;
         };
 
         g2d.drawImage(image, this.x, this.y, this.width, this.height, null);
     }
 
     public void update(KeyHandler keyH){
-        if (keyH.isUpPressed()){
-            this.y -= speed;
+        if(anyMoveKeyIsPressed(keyH)) {
+            if (keyH.isUpPressed()) {
+                this.y -= speed;
+            }
+            if (keyH.isDownPressed()) {
+                this.y += speed;
+            }
+            if (keyH.isLeftPressed()) {
+                this.direction = "left";
+                this.x -= speed;
+            }
+            if (keyH.isRightPressed()) {
+                this.direction = "right";
+                this.x += speed;
+            }
         }
-        if (keyH.isDownPressed()){
-            this.y += speed;
-        }
-        if (keyH.isLeftPressed()){
-            this.direction = "left";
-            this.x -= speed;
-        }
-        if (keyH.isRightPressed()){
-            this.direction = "right";
-            this.x += speed;
-        }
+        this.direction = "idle";
     }
 }

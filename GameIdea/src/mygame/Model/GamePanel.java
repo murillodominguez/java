@@ -63,6 +63,14 @@ public class GamePanel extends JPanel implements Runnable {
                 delta--;
                 drawCount++;
             }
+            if(drawCount == 12){
+                if(player.spriteNum == 1) {
+                    player.spriteNum = 2;
+                }
+                else{
+                    player.spriteNum = 2;
+                }
+            }
             if (timer >= 1000000000) {
 //                System.out.println("FPS: " + drawCount);
                 drawCount = 0;

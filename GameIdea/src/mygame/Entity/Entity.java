@@ -11,5 +11,10 @@ public class Entity {
     public KeyHandler keyH;
     public int x, y, speed;
     public String direction;
-    public BufferedImage spriteLeft1, spriteLeft2, spriteRight1, spriteRight2;
+    public BufferedImage spriteIdleLeft, spriteIdleRight, spriteWalkLeft1, spriteWalkLeft2, spriteWalkRight1, spriteWalkRight2;
+    public int spriteNum;
+
+    public boolean anyMoveKeyIsPressed(KeyHandler keyH){
+        return keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed;
+    }
 }
