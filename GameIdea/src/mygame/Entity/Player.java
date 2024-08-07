@@ -28,8 +28,8 @@ public class Player extends Entity {
 
     public void getPlayerSprite(){
         try{
-            this.spriteIdleLeft = ImageIO.read(getClass().getResourceAsStream("/player/sprite_idle_l1.png"));
-            this.spriteIdleRight = ImageIO.read(getClass().getResourceAsStream("/player/sprite_idle_r1.png"));
+            this.spriteIdleLeft = ImageIO.read(getClass().getResourceAsStream("/player/sprite_idle_l.png"));
+            this.spriteIdleRight = ImageIO.read(getClass().getResourceAsStream("/player/sprite_idle_r.png"));
             this.spriteWalkLeft1 = ImageIO.read(getClass().getResourceAsStream("/player/sprite_walk_l1.png"));
             this.spriteWalkLeft2 = ImageIO.read(getClass().getResourceAsStream("/player/sprite_walk_l2.png"));
             this.spriteWalkRight1 = ImageIO.read(getClass().getResourceAsStream("/player/sprite_walk_r1.png"));
@@ -55,34 +55,56 @@ public class Player extends Entity {
                 if(spriteNum == 1){
                     image = spriteWalkRight1;
                 }
-                if(spriteNum == 1){
+                if(spriteNum == 2){
                     image = spriteWalkRight2;
                 }
                 break;
-            default:
+            case "idleleft":
+                image = spriteIdleLeft;
+                break;
+            case "idleright":
                 image = spriteIdleRight;
+                break;
         };
 
         g2d.drawImage(image, this.x, this.y, this.width, this.height, null);
     }
 
-    public void update(KeyHandler keyH){
-        if(anyMoveKeyIsPressed(keyH)) {
-            if (keyH.isUpPressed()) {
+    public void update(KeyHandler keyH) {
+        if (anyMoveKeyIsPressed(keyH)) {
+            if (keyH.upPressed) {
                 this.y -= speed;
             }
-            if (keyH.isDownPressed()) {
+            if (keyH.downPressed) {
                 this.y += speed;
             }
-            if (keyH.isLeftPressed()) {
+            if (keyH.leftPressed) {
                 this.direction = "left";
                 this.x -= speed;
             }
-            if (keyH.isRightPressed()) {
+            if (keyH.rightPressed) {
                 this.direction = "right";
                 this.x += speed;
             }
+            ++spriteCounter;
+            if(spriteCounter >= 16){
+                if(spriteNum == 1){
+                    spriteNum = 2;
+                }
+                else if (spriteNum == 2){
+                    spriteNum = 1;
+                }
+                spriteCounter = 0;
+            }
+        } else {
+            if(keyH.lastKeyPressed.equals("left")) {
+                this.direction = "idleleft";
+            }
+            else{
+                this.direction = "idleright";
+            }
         }
-        this.direction = "idle";
     }
+
+
 }

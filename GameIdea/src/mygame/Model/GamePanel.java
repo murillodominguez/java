@@ -30,7 +30,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
-        this.setBackground(Color.BLACK);
+        this.setBackground(new Color(100,150,255));
         this.setDoubleBuffered(true);
         this.setFocusable(true);
         this.addKeyListener(keyH);
@@ -63,14 +63,7 @@ public class GamePanel extends JPanel implements Runnable {
                 delta--;
                 drawCount++;
             }
-            if(drawCount == 12){
-                if(player.spriteNum == 1) {
-                    player.spriteNum = 2;
-                }
-                else{
-                    player.spriteNum = 2;
-                }
-            }
+
             if (timer >= 1000000000) {
 //                System.out.println("FPS: " + drawCount);
                 drawCount = 0;
