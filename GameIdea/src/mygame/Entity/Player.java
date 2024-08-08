@@ -2,6 +2,8 @@ package mygame.Entity;
 
 import mygame.Model.GamePanel;
 import mygame.Model.KeyHandler;
+import mygame.Model.Level;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.IOException;
@@ -73,10 +75,8 @@ public class Player extends Entity {
     public void update(KeyHandler keyH) {
         if (anyMoveKeyIsPressed(keyH)) {
             if (keyH.upPressed) {
-                this.y -= speed;
             }
             if (keyH.downPressed) {
-                this.y += speed;
             }
             if (keyH.leftPressed) {
                 this.direction = "left";

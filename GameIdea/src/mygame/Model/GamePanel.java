@@ -1,5 +1,6 @@
 package mygame.Model;
 
+import Tile.TileManager;
 import mygame.Entity.Enemy;
 import mygame.Entity.Player;
 
@@ -24,6 +25,7 @@ public class GamePanel extends JPanel implements Runnable {
     private final KeyHandler keyH = new KeyHandler();
     private Thread gameThread;
 
+    private TileManager tileManager = new TileManager(this);
     private Player player = new Player(this, keyH);
     private List<Enemy> enemies;
 
@@ -97,6 +99,7 @@ public class GamePanel extends JPanel implements Runnable {
 
         Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(Color.white);
+        tileManager.draw(g2d);
         player.draw(g2d);
 //        for(int i = 0; i < enemies.size(); i++) {
 //        	Enemy enemy = enemies.get(i);

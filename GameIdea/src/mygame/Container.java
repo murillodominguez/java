@@ -11,9 +11,6 @@ public class Container extends JFrame {
     }
 
     public static void main(String[] args) {
-        String classpathStr = System.getProperty("java.class.path");
-        System.out.print(classpathStr);
-
         Container window = new Container();
         GamePanel gamePanel = new GamePanel();
         window.add(gamePanel);
