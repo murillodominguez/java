@@ -14,10 +14,10 @@ public class Container extends JFrame {
         Container window = new Container();
         GamePanel gamePanel = new GamePanel();
         window.add(gamePanel);
-        
-        window.pack();
 
+        window.pack();
         window.setLocationRelativeTo(null);
+
         window.setVisible(true);
 
 

@@ -116,11 +116,11 @@ public class TileManager {
         printtimes++;
     }
 
-    public int findTileForSpawnPosition(int playerSpawnX){
+    public int findTileForSpawnPosition(int playerSpawnX, int playerWidth, int playerHeight){
         for(int i = 0; i < mapTileNum.length; i++) {
             for (int j = 0; j < mapTileNum[i].length; j++) {
-                if (tile[mapTileNum[i][j]].attribute.equals("ground") && i*gp.tileSize == playerSpawnX / 16 *16) {
-                    return (j*gp.tileSize)-gp.tileSize*3/2;
+                if (tile[mapTileNum[i][j]].attribute.equals("ground") && (i*gp.tileSize == playerSpawnX / 16 * 16 || (i == 0 && playerSpawnX / 16 <= 0))) {
+                    return j*gp.tileSize-playerHeight;
                 }
             }
         }

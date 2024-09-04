@@ -36,7 +36,6 @@ public class GamePanel extends JPanel implements Runnable {
         this.setDoubleBuffered(true);
         this.setFocusable(true);
         this.addKeyListener(keyH);
-
         this.spawnEnemies();
     }
 
@@ -109,6 +108,7 @@ public class GamePanel extends JPanel implements Runnable {
 //        		else {
 //        			enemies.remove(i);
 //        		}
+        g2d.drawRect(0,0, 16, 16);
         g2d.dispose();
     }
 //        g2d.drawImage(background, 0, 0, null);

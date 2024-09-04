@@ -15,14 +15,15 @@ public class Player extends Entity {
     public Player(GamePanel gp, KeyHandler keyH){
         this.gp = gp;
         this.keyH = keyH;
-        this.width = gp.tileSize * 2;
-        this.height = gp.tileSize * 2;
+        this.width = gp.tileSize;
+        this.height = gp.tileSize;
         setDefaultValues();
         getPlayerSprite();
     }
 
     public void setDefaultValues(){
-        this.x = 100;
+        this.x = 0;
+
         this.speed = 4;
         this.direction = "rightIdle";
     }
@@ -43,7 +44,8 @@ public class Player extends Entity {
 
     public void draw(Graphics2D g2d){
         BufferedImage image = null;
-        if(this.y == 0) this.y = gp.tileManager.findTileForSpawnPosition(this.x);
+        if(this.y == 0) this.y = gp.tileManager.findTileForSpawnPosition(this.x, width, height);
+        System.out.println(gp.tileManager.findTileForSpawnPosition(this.x, width, height));
         switch (this.direction) {
             case "left":
                 if(spriteNum == 1){
@@ -100,6 +102,8 @@ public class Player extends Entity {
                 this.direction = "idleright";
             }
         }
+        this.x = Math.max(this.x, 0);
+        this.x = Math.min(this.x, gp.screenWidth-width);
     }
 
 
