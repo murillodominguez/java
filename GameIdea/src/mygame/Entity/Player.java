@@ -11,7 +11,7 @@ import java.awt.image.BufferedImage;
 import java.util.Objects;
 
 public class Player extends Entity {
-    public int height, width;
+    public int height, width, spawnX = 0, spawnY = 0;
     public Player(GamePanel gp, KeyHandler keyH){
         this.gp = gp;
         this.keyH = keyH;
@@ -23,7 +23,6 @@ public class Player extends Entity {
 
     public void setDefaultValues(){
         this.x = 100;
-        this.y = 100;
         this.speed = 4;
         this.direction = "rightIdle";
     }
@@ -44,6 +43,7 @@ public class Player extends Entity {
 
     public void draw(Graphics2D g2d){
         BufferedImage image = null;
+        if(this.y == 0) this.y = gp.tileManager.findTileForSpawnPosition(this.x);
         switch (this.direction) {
             case "left":
                 if(spriteNum == 1){
@@ -67,17 +67,13 @@ public class Player extends Entity {
             case "idleright":
                 image = spriteIdleRight;
                 break;
-        };
+        }
 
         g2d.drawImage(image, this.x, this.y, this.width, this.height, null);
     }
 
     public void update(KeyHandler keyH) {
         if (anyMoveKeyIsPressed(keyH)) {
-            if (keyH.upPressed) {
-            }
-            if (keyH.downPressed) {
-            }
             if (keyH.leftPressed) {
                 this.direction = "left";
                 this.x -= speed;
@@ -100,7 +96,7 @@ public class Player extends Entity {
             if(keyH.lastKeyPressed.equals("left")) {
                 this.direction = "idleleft";
             }
-            else{
+            else if(keyH.lastKeyPressed.equals("right")){
                 this.direction = "idleright";
             }
         }
