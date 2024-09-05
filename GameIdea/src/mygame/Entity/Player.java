@@ -3,6 +3,7 @@ package mygame.Entity;
 import mygame.Model.GamePanel;
 import mygame.Model.KeyHandler;
 import mygame.Model.Level;
+import mygame.Model.Sound;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -11,7 +12,10 @@ import java.awt.image.BufferedImage;
 import java.util.Objects;
 
 public class Player extends Entity {
-    public int height, width, spawnX = 0, spawnY = 0;
+    public int height, width;
+    public Sound[] soundEffects = new Sound[2];
+    public int jumpTimeCounter = 0;
+    public int jumpAcceleration = 0;
     public Player(GamePanel gp, KeyHandler keyH){
         this.gp = gp;
         this.keyH = keyH;
@@ -23,9 +27,11 @@ public class Player extends Entity {
 
     public void setDefaultValues(){
         this.x = 0;
-
-        this.speed = 4;
+        this.velocityY = 6;
+        this.speedX = 4;
+        this.speedY = 0;
         this.direction = "rightIdle";
+        soundEffects[0] = new Sound(1);
     }
 
     public void getPlayerSprite(){
@@ -74,26 +80,84 @@ public class Player extends Entity {
         g2d.drawImage(image, this.x, this.y, this.width, this.height, null);
     }
 
+    public void animate(){
+        ++spriteCounter;
+        if(spriteCounter >= 16){
+            if(spriteNum == 1){
+                spriteNum = 2;
+            }
+            else if (spriteNum == 2){
+                spriteNum = 1;
+            }
+            spriteCounter = 0;
+        }
+    }
+    int jumpSpeed = 15;
+    int jumpHeight, jumpCounter;
+    public void jumpAcceleration(){
+        jumpTimeCounter++;
+        if(jumpTimeCounter >= 30){
+            this.jumpSpeed = 0;
+        }
+        else if(jumpTimeCounter >= 5){
+            jumpAcceleration = 3;
+            if(jumpTimeCounter > 5 && jumpTimeCounter % 5 == 0) {
+                this.jumpSpeed -= jumpAcceleration;
+            }
+                y -= this.jumpSpeed;
+        }
+    }
+
+    public void jump(){
+        if(jumpHeight > 0) {
+            jumpCounter = jumpHeight/speedY;
+            this.y += jumpCounter;
+        }
+        jumpHeight -= jumpCounter;
+    }
+
+    int gravityApplyCounter = 0;
+    public void gravity() {
+        this.speedY = velocityY;
+        if (gravityApplyCounter > 16 && gravityApplyCounter % 16 == 0) {
+            this.speedY += velocityY;
+        }
+        if (gravityApplyCounter > 60) {
+            gravityApplyCounter = 0;
+        }
+        this.y += this.speedY;
+        gravityApplyCounter++;
+    }
+    Sound jumpSFX;
+    int counter = 0;
     public void update(KeyHandler keyH) {
+        jump();
+        jumpSFX = new Sound(1);
+        if(!keyH.jumpPressed) {
+            counter = 0;
+            jumpTimeCounter = 0;
+            jumpSpeed = 15;
+        }
+        if(!gp.checkPlayerCollision(x,y, width, height)) gravity();
         if (anyMoveKeyIsPressed(keyH)) {
             if (keyH.leftPressed) {
                 this.direction = "left";
-                this.x -= speed;
+                this.x -= speedX;
             }
             if (keyH.rightPressed) {
                 this.direction = "right";
-                this.x += speed;
+                this.x += speedX;
             }
-            ++spriteCounter;
-            if(spriteCounter >= 16){
-                if(spriteNum == 1){
-                    spriteNum = 2;
+            if(keyH.jumpPressed) {
+                this.direction = "right";
+                jumpHeight = 15;
+                if(counter == 0) {
+                    jumpSFX.play();
+                    counter++;
                 }
-                else if (spriteNum == 2){
-                    spriteNum = 1;
-                }
-                spriteCounter = 0;
+                jumpAcceleration();
             }
+            animate();
         } else {
             if(keyH.lastKeyPressed.equals("left")) {
                 this.direction = "idleleft";

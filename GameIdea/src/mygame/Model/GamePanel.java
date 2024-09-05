@@ -1,6 +1,7 @@
 package mygame.Model;
 
-import Tile.TileManager;
+import mygame.Tile.Tile;
+import mygame.Tile.TileManager;
 import mygame.Entity.Enemy;
 import mygame.Entity.Player;
 
@@ -23,6 +24,7 @@ public class GamePanel extends JPanel implements Runnable {
     int FPS = 60;
 
     private final KeyHandler keyH = new KeyHandler();
+    private final Sound themeSong = new Sound(0);
     private Thread gameThread;
 
     public TileManager tileManager = new TileManager(this);
@@ -37,6 +39,8 @@ public class GamePanel extends JPanel implements Runnable {
         this.setFocusable(true);
         this.addKeyListener(keyH);
         this.spawnEnemies();
+        this.themeSong.play();
+        this.themeSong.loop();
     }
 
     public void startGameThread() {
@@ -90,7 +94,20 @@ public class GamePanel extends JPanel implements Runnable {
 //        	enemy.update(null);
 //        }
     }
-
+    public boolean checkPlayerCollision(int playerX, int playerY, int playerWidth, int playerHeight){
+        playerY += playerHeight;
+        Tile[] tiles = tileManager.tile;
+        int[][] tileMap = tileManager.mapTileNum;
+        for(int i = 0; i<tileMap[i].length; i++) {
+            for(int j = 0; j<tileMap[j].length; j++) {
+                int tileY = j*tileSize;
+                if (tiles[tileMap[i][j]].attribute.equals("ground") && playerY > tileY) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
     @Override
     public void paintComponent(Graphics g) {
 //    	Toolkit.getDefaultToolkit().sync();

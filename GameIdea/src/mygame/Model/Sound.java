@@ -9,13 +9,19 @@ public class Sound {
     public Clip clip;
     public URL[] soundURL = new URL[30];
 
-    public Sound(){
-        soundURL[0] = getClass().getResource("//sound/maintheme.wav");
+    public Sound(int file) {
+        setFile(file);
+    }
+
+    public URL[] listSounds(){
+        soundURL[0] = getClass().getResource("/sound/maintheme.wav");
+        soundURL[1] = getClass().getResource("/sound/mario_jump.wav");
+        return soundURL;
     }
 
     public void setFile(int i){
         try {
-            AudioInputStream ais = AudioSystem.getAudioInputStream(soundURL[i]);
+            AudioInputStream ais = AudioSystem.getAudioInputStream(listSounds()[i]);
             clip = AudioSystem.getClip();
             clip.open(ais);
         }catch(Exception e){
@@ -29,6 +35,10 @@ public class Sound {
 
     public void loop(){
         clip.loop(Clip.LOOP_CONTINUOUSLY);
+    }
+
+    public void close(){
+        clip.close();
     }
 
     public void stop(){

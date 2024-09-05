@@ -18,11 +18,11 @@ public class Enemy extends Entity {
     public void setDefaultValues(){
         this.x = 500;
         this.y = 500;
-        this.speed = 4;
+        this.speedX = 4;
     }
 
     public void update(KeyHandler keyH) {
-        this.x -= speed;
+        this.x -= speedX;
     }
 
     public void load(Graphics2D g2d) {

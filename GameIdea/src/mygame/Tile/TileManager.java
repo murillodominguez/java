@@ -1,4 +1,4 @@
-package Tile;
+package mygame.Tile;
 
 import mygame.Model.GamePanel;
 
@@ -14,8 +14,8 @@ import java.io.InputStreamReader;
 
 public class TileManager {
     GamePanel gp;
-    Tile[] tile;
-    int[][] mapTileNum;
+    public Tile[] tile;
+    public int[][] mapTileNum;
 
     public TileManager(GamePanel gp) {
         this.gp = gp;
@@ -126,4 +126,5 @@ public class TileManager {
         }
         return playerSpawnX / 16 * 16;
     }
+
 }
